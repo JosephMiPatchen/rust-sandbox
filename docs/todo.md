@@ -26,3 +26,17 @@ async fn some_handler() {
         expensive_computation()
     }).await?;
 }
+
+## look into lighth houses span issues
+
+// ❌ Avoid - span on simple getter
+#[instrument]
+fn get_head_block_root(&self) -> Hash256 {
+    self.head_block_root
+}
+
+// ✅ Preferred - span on meaningful operations
+#[instrument(skip(self))]
+async fn process_block(&self, block: Block) -> Result<(), Error> {
+    // meaningful computation
+}
